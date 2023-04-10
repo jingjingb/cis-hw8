@@ -9,6 +9,7 @@ student_name = "Jingjing Bai"
 # Section 1: Perceptrons
 ############################################################
 
+
 class BinaryPerceptron(object):
 
     def __init__(self, examples, iterations):
@@ -65,12 +66,13 @@ class MulticlassPerceptron(object):
     def predict(self, x):
         predicted_label = None
         current_max = -1
-        for l in self.l_to_w_map.keys():
-            l_score = self.predict_l_score(x, l)
+        for label in self.l_to_w_map.keys():
+            l_score = self.predict_l_score(x, label)
             if l_score > current_max:
                 current_max = l_score
-                predicted_label = l
+                predicted_label = label
         return predicted_label
+
 
 ############################################################
 # Section 2: Applications
@@ -81,6 +83,7 @@ def read_data(data):
 def format_input(instance):
     return {i+1: instance[i] for i, x in enumerate(instance, 0)}
 
+
 class IrisClassifier(object):
 
     def __init__(self, data):
@@ -88,6 +91,7 @@ class IrisClassifier(object):
 
     def classify(self, instance):
         return self.classifier.predict(format_input(instance))
+
 
 class DigitClassifier(object):
 
@@ -101,7 +105,8 @@ class DigitClassifier(object):
 class BiasClassifier(object):
 
     def __init__(self, data):
-        self.classifier = BinaryPerceptron([({1: x, 2: 1}, y) for x, y in data], 10)
+        self.classifier = BinaryPerceptron([(
+            {1: x, 2: 1}, y) for x, y in data], 10)
 
     def classify(self, instance):
         return self.classifier.predict({1: instance, 2: 1})
@@ -110,18 +115,24 @@ class BiasClassifier(object):
 class MysteryClassifier1(object):
 
     def __init__(self, data):
-        self.classifier = BinaryPerceptron([({1: x[0]**2 + x[1]**2, 2: 1}, y) for x, y in data], 10)
+        self.classifier = BinaryPerceptron([(
+            {1: x[0]**2 + x[1]**2, 2: 1}, y) for x, y in data], 10)
 
     def classify(self, instance):
-        return self.classifier.predict({1: instance[0]**2 + instance[1]**2, 2: 1})
+        return self.classifier.predict(
+            {1: instance[0]**2 + instance[1]**2, 2: 1})
+
 
 class MysteryClassifier2(object):
 
     def __init__(self, data):
-        self.classifier = BinaryPerceptron([({1: x[0] * x[1] * x[2]}, y) for x, y in data], 10)
+        self.classifier = BinaryPerceptron(
+            [({1: x[0] * x[1] * x[2]}, y) for x, y in data], 10)
 
     def classify(self, instance):
-        return self.classifier.predict({1: instance[0] * instance[1] * instance[2]})
+        return self.classifier.predict(
+            {1: instance[0] * instance[1] * instance[2]})
+
 
 ############################################################
 # Section 3: Feedback
