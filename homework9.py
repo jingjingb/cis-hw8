@@ -30,8 +30,21 @@ class BinaryPerceptron(object):
 
                 if predict_label == y:
                     continue
+                if predict_label is not y:
+                    if y:
+                        for key in x.keys():
+                            if key in self.w_map:
+                                self.w_map[key] += x[key]
+                            else:
+                                self.w_map[key] = x[key]
+                    else:
+                        for key in x.keys():
+                            if key in self.w_map:
+                                self.w_map[key] -= x[key]
+                            else:
+                                self.w_map[key] = -x[key]
                 # update weight map if mislabel.
-                self.w_map = {k : v + x.get(k, 0) * (2 * int(predict_label) - 1) for k, v in self.w_map.items()}
+                #self.w_map = {k : v + x.get(k, 0) * (2 * int(predict_label) - 1) for k, v in self.w_map.items()}
 
     def predict(self, x):
         return sum([v * self.w_map.get(key, 0) for key, v in x.items()]) > 0
