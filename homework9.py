@@ -144,16 +144,12 @@ class MysteryClassifier2(object):
 # Section 3: Feedback
 ############################################################
 
-feedback_question_1 = 0
+feedback_question_1 = 5
 
 feedback_question_2 = """
-Type your response here.
-Your response may span multiple lines.
-Do not include these instructions in your response.
+the details of implementation, corner cases
 """
 
 feedback_question_3 = """
-Type your response here.
-Your response may span multiple lines.
-Do not include these instructions in your response.
+application examples are great
 """
