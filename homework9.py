@@ -45,7 +45,7 @@ class MulticlassPerceptron(object):
 
     def __init__(self, examples, iterations):
         # label to weight
-        self.l_to_w_map = {l: {} for l in set(examples.values())}
+        self.l_to_w_map = {y: {} for (x, y) in examples}
 
         for __ in range(iterations):
             for x, correct_y in examples:
