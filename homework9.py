@@ -14,14 +14,11 @@ class BinaryPerceptron(object):
     def __init__(self, examples, iterations):
         example, _ = examples[0]
         self.w_map = { key: 0 for key in example.keys()}
-
         for __ in range(iterations):
             for x, y in examples:
                 predict_label = self.predict(x)
-
                 if predict_label == y:
                     continue
-
                 # update weight map if mislabel.
                 for k in x.keys():
                     if k in self.w_map:
@@ -42,15 +39,11 @@ class MulticlassPerceptron(object):
             for x, correct_y in examples:
                 predicted_label = None
                 current_max = -1
-
                 for l in self.l_to_w_map.keys():
                     l_score = self.predict_l_score(x, l)
-
                     if l_score > current_max:
                         current_max = l_score
                         predicted_label = l
-
-
                 if predicted_label != correct_y:
                     correct_label_map = self.l_to_w_map.get(correct_y)
                     for key in x.keys():
@@ -58,13 +51,13 @@ class MulticlassPerceptron(object):
                             correct_label_map[key] += x[key]
                         else:
                             correct_label_map[key] = x[key]
-
                     predicted_label_map = self.l_to_w_map.get(predicted_label)
                     for key in x.keys():
                         if key in predicted_label_map:
                             predicted_label_map[key] -= x[key]
                         else:
                             predicted_label_map[key] = -x[key]
+
     def predict_l_score(self, x, l):
         l_w_map = self.l_to_w_map.get(l)
         return sum([x[key] * l_w_map.get(key, 0) for key in x.keys()])
@@ -74,7 +67,6 @@ class MulticlassPerceptron(object):
         current_max = -1
         for l in self.l_to_w_map.keys():
             l_score = self.predict_l_score(x, l)
-
             if l_score > current_max:
                 current_max = l_score
                 predicted_label = l
