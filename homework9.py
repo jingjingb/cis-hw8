@@ -87,51 +87,58 @@ class MulticlassPerceptron(object):
             if l_score > current_max:
                 current_max = l_score
                 predicted_label = l
-        return predicted_label 
+        return predicted_label
 
 ############################################################
 # Section 2: Applications
 ############################################################
+def read_data(data):
+    return [({i: v for i, v in enumerate(x, 1)}, y) for x, y in data]
+
+def format_input(instance):
+    return {i+1: instance[i] for i, x in enumerate(instance, 0)}
 
 class IrisClassifier(object):
 
     def __init__(self, data):
-        pass
+        self.classifier = MulticlassPerceptron(read_data(data), 100)
 
     def classify(self, instance):
-        pass
+        return self.classifier.predict(format_input(instance))
 
 class DigitClassifier(object):
 
     def __init__(self, data):
-        pass
+        self.classifier = MulticlassPerceptron(read_data(data), 10)
 
     def classify(self, instance):
-        pass
+        return self.classifier.predict(format_input(instance))
+
 
 class BiasClassifier(object):
 
     def __init__(self, data):
-        pass
+        self.classifier = BinaryPerceptron([({1: x, 2: 1}, y) for x, y in data], 10)
 
     def classify(self, instance):
-        pass
+        return self.classifier.predict({1: instance, 2: 1})
+
 
 class MysteryClassifier1(object):
 
     def __init__(self, data):
-        pass
+        self.classifier = BinaryPerceptron([({1: x[0]**2 + x[1]**2, 2: 1}, y) for x, y in data], 10)
 
     def classify(self, instance):
-        pass
+        return self.classifier.predict({1: instance[0]**2 + instance[1]**2, 2: 1})
 
 class MysteryClassifier2(object):
 
     def __init__(self, data):
-        pass
+        self.classifier = BinaryPerceptron([({1: x[0] * x[1] * x[2]}, y) for x, y in data], 10)
 
     def classify(self, instance):
-        pass
+        return self.classifier.predict({1: instance[0] * instance[1] * instance[2]})
 
 ############################################################
 # Section 3: Feedback
