@@ -44,10 +44,50 @@ class BinaryPerceptron(object):
 class MulticlassPerceptron(object):
 
     def __init__(self, examples, iterations):
-        pass
+        # label to weight
+        self.l_to_w_map = {l: {} for l in set(examples.values())}
+
+        for __ in range(iterations):
+            for x, correct_y in examples:
+                predicted_label = None
+                current_max = -1
+
+                for l in self.l_to_w_map.keys():
+                    l_score = self.predict_l_score(x, l)
+
+                    if l_score > current_max:
+                        current_max = l_score
+                        predicted_label = l
+
+
+                if predicted_label != correct_y:
+                    correct_label_map = self.l_to_w_map.get(correct_y)
+                    for key in x.keys():
+                        if key in correct_label_map:
+                            correct_label_map[key] += x[key]
+                        else:
+                            correct_label_map[key] = x[key]
+
+                    predicted_label_map = self.l_to_w_map.get(predicted_label)
+                    for key in x.keys():
+                        if key in predicted_label_map:
+                            predicted_label_map[key] -= x[key]
+                        else:
+                            predicted_label_map[key] = -x[key]
+    def predict_l_score(self, x, l):
+        l_w_map = self.l_to_w_map.get(l)
+        return sum([x[key] * l_w_map.get(key, 0) for key in x.keys()])
     
     def predict(self, x):
-        pass
+        predicted_label = None
+        current_max = -1
+        for l in self.l_to_w_map.keys():
+            l_score = self.predict_l_score(x, l)
+
+            if l_score > current_max:
+                current_max = l_score
+                predicted_label = l
+        return predicted_label 
 
 ############################################################
 # Section 2: Applications
