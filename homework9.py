@@ -14,7 +14,7 @@ class BinaryPerceptron(object):
 
     def __init__(self, examples, iterations):
         example, _ = examples[0]
-        self.w_map = { key: 0 for key in example.keys()}
+        self.w_map = {key: 0 for key in example.keys()}
         for __ in range(iterations):
             for x, y in examples:
                 predict_label = self.predict(x)
@@ -30,6 +30,7 @@ class BinaryPerceptron(object):
     def predict(self, x):
         return sum([v * self.w_map.get(key, 0) for key, v in x.items()]) > 0
 
+
 class MulticlassPerceptron(object):
 
     def __init__(self, examples, iterations):
@@ -40,11 +41,11 @@ class MulticlassPerceptron(object):
             for x, correct_y in examples:
                 predicted_label = None
                 current_max = -1
-                for l in self.l_to_w_map.keys():
-                    l_score = self.predict_l_score(x, l)
+                for label in self.l_to_w_map.keys():
+                    l_score = self.predict_l_score(x, label)
                     if l_score > current_max:
                         current_max = l_score
-                        predicted_label = l
+                        predicted_label = label
                 if predicted_label != correct_y:
                     correct_label_map = self.l_to_w_map.get(correct_y)
                     for key in x.keys():
@@ -59,10 +60,10 @@ class MulticlassPerceptron(object):
                         else:
                             predicted_label_map[key] = -x[key]
 
-    def predict_l_score(self, x, l):
-        l_w_map = self.l_to_w_map.get(l)
+    def predict_l_score(self, x, label):
+        l_w_map = self.l_to_w_map.get(label)
         return sum([x[key] * l_w_map.get(key, 0) for key in x.keys()])
-    
+
     def predict(self, x):
         predicted_label = None
         current_max = -1
@@ -79,6 +80,7 @@ class MulticlassPerceptron(object):
 ############################################################
 def read_data(data):
     return [({i: v for i, v in enumerate(x, 1)}, y) for x, y in data]
+
 
 def format_input(instance):
     return {i+1: instance[i] for i, x in enumerate(instance, 0)}
